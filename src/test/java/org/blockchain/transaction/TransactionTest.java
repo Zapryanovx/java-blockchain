@@ -4,7 +4,11 @@ import org.blockchain.transaction.Cryptocurrency;
 import org.blockchain.transaction.Transaction;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -97,6 +101,35 @@ public class TransactionTest {
                         5,
                         null),
                 "Expected exception when cryptocurrency is null."
+        );
+    }
+
+    @Test
+    void testTransactionsWithSameIdAreEqual() {
+        Transaction first = new Transaction(
+                "same-id",
+                "sender",
+                "receiver",
+                5,
+                Cryptocurrency.BTC
+        );
+
+        Transaction second = new Transaction(
+                "same-id",
+                "another-sender",
+                "another-receiver",
+                999,
+                Cryptocurrency.ETH
+        );
+
+        assertEquals(first,
+                     second,
+                     "Expected transactions to be identical if same ids."
+        );
+
+        assertEquals(first.hashCode(),
+                     second.hashCode(),
+                     "Expected transactions to be identical if same hash codes."
         );
     }
 }

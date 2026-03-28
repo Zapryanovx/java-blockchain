@@ -19,7 +19,17 @@ public class Transaction {
             double amount,
             Cryptocurrency currency
     ) {
-        this.id = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), sender, receiver, amount, currency);
+    }
+
+    Transaction(
+            String id,
+            String sender,
+            String receiver,
+            double amount,
+            Cryptocurrency currency
+    ) {
+        this.id = Validator.requireNotNullNonBlank(id, "id");
         this.sender = Validator.requireNotNullNonBlank(sender, "sender");
         this.receiver = Validator.requireNotNullNonBlank(receiver, "receiver");
         this.amount = Validator.requirePositive(amount, "amount");
