@@ -1,11 +1,6 @@
 package org.blockchain.transaction;
 
-import org.blockchain.transaction.Cryptocurrency;
-import org.blockchain.transaction.Transaction;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +15,7 @@ public class TransactionTest {
                         "sender",
                         "receiver",
                         5,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected a valid transaction to be created and exception not to be thrown."
         );
@@ -31,6 +27,7 @@ public class TransactionTest {
                 "sender",
                 "receiver",
                 5,
+                0.001,
                 Cryptocurrency.BTC);
 
         assertNotNull(transaction.getId(),
@@ -44,6 +41,7 @@ public class TransactionTest {
                         null,
                         "receiver",
                         5,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected exception when sender is null."
         );
@@ -55,6 +53,7 @@ public class TransactionTest {
                         "",
                         "receiver",
                         5,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected exception when sender is blank."
         );
@@ -66,6 +65,7 @@ public class TransactionTest {
                         "sender",
                         null,
                         5,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected exception when receiver is null."
         );
@@ -77,6 +77,7 @@ public class TransactionTest {
                         "sender",
                         "",
                         5,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected exception when receiver is blank."
         );
@@ -88,8 +89,21 @@ public class TransactionTest {
                         "sender",
                         "receiver",
                         0,
+                        0.001,
                         Cryptocurrency.BTC),
                 "Expected exception when amount is zero or negative."
+        );
+    }
+
+    @Test
+    void testTransactionWithZeroFeeThrows() {
+        assertThrows(IllegalArgumentException.class, () -> new Transaction(
+                        "sender",
+                        "receiver",
+                        5,
+                        0,
+                        Cryptocurrency.BTC),
+                "Expected exception when fee is zero."
         );
     }
 
@@ -99,6 +113,7 @@ public class TransactionTest {
                         "sender",
                         "receiver",
                         5,
+                        0.001,
                         null),
                 "Expected exception when cryptocurrency is null."
         );
@@ -111,6 +126,7 @@ public class TransactionTest {
                 "sender",
                 "receiver",
                 5,
+                0.001,
                 Cryptocurrency.BTC
         );
 
@@ -119,17 +135,18 @@ public class TransactionTest {
                 "another-sender",
                 "another-receiver",
                 999,
+                0.002,
                 Cryptocurrency.ETH
         );
 
         assertEquals(first,
-                     second,
-                     "Expected transactions to be identical if same ids."
+                second,
+                "Expected transactions to be identical if same ids."
         );
 
         assertEquals(first.hashCode(),
-                     second.hashCode(),
-                     "Expected transactions to be identical if same hash codes."
+                second.hashCode(),
+                "Expected transactions to be identical if same hash codes."
         );
     }
 }

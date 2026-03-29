@@ -11,15 +11,16 @@ public class Transaction {
     private final String sender;
     private final String receiver;
     private final double amount;
+    private final double fee;
     private final Cryptocurrency currency;
 
     public Transaction(
             String sender,
             String receiver,
             double amount,
-            Cryptocurrency currency
-    ) {
-        this(UUID.randomUUID().toString(), sender, receiver, amount, currency);
+            double fee,
+            Cryptocurrency currency) {
+        this(UUID.randomUUID().toString(), sender, receiver, amount, fee, currency);
     }
 
     Transaction(
@@ -27,12 +28,13 @@ public class Transaction {
             String sender,
             String receiver,
             double amount,
-            Cryptocurrency currency
-    ) {
+            double fee,
+            Cryptocurrency currency) {
         this.id = Validator.requireNotNullNonBlank(id, "id");
         this.sender = Validator.requireNotNullNonBlank(sender, "sender");
         this.receiver = Validator.requireNotNullNonBlank(receiver, "receiver");
         this.amount = Validator.requirePositive(amount, "amount");
+        this.fee = Validator.requirePositive(fee, "fee");
         this.currency = Validator.requireNonNull(currency, "currency");
     }
 
@@ -69,7 +71,12 @@ public class Transaction {
         return amount;
     }
 
+    public double getFee() {
+        return fee;
+    }
+
     public Cryptocurrency getCurrency() {
         return currency;
     }
+
 }
